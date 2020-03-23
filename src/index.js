@@ -9,21 +9,31 @@ class App extends Component {
     super(props);
     this.state = { count: 100 };
     this.liked = false;
+    this.error = "";
   }
 
   like = () => {
-    if (!this.liked) {
-      this.liked = true;
-      this.setState(({ count }) => ({ count: count + 1 }));
-      return;
-    }
-    this.liked = false;
-    this.setState(({ count }) => ({ count: count - 1 }));
+    fetch("http://localhost:3002/")
+      .then(data => data.json())
+      .then(r => {
+        console.log(r);
+        if (r) {
+          this.setState(() => ({ error: "" }));
+          if (!this.liked) {
+            this.liked = true;
+            this.setState(({ count }) => ({ count: count + 1 }));
+            return;
+          }
+          this.liked = false;
+          this.setState(({ count }) => ({ count: count - 1 }));
+        } else this.setState(() => ({ error: "impossible to click" }));
+      });
   };
 
   render() {
-    const { count } = this.state;
+    const { count, error } = this.state;
     return (
+      <React.Fragment>
       <button
         type="button"
         onClick={this.like}
@@ -31,6 +41,8 @@ class App extends Component {
       >
         Like | <span className="likes-counter">{count}</span>
       </button>
+      <p>{error}</p>
+      </React.Fragment>
     );
   }
 }
