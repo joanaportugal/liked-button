@@ -1,0 +1,13 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.like-button {
+  padding: 8px;
+}
+
+.like-button.liked {
+  color: blue;
+  font-weight: bold;
+}
